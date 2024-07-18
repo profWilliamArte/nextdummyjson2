@@ -1,0 +1,100 @@
+Etapa 2 componentes externos
+1) Next js TopLoader
+El componente NextTopLoader de nextjs-toploader es una barra de progreso superior para aplicaciones Next.jsEl componente NextTopLoader de nextjs-toploader es una barra de progreso superior para aplicaciones Next.js
+
+    npm i nextjs-toploader
+    -- import NextTopLoader from 'nextjs-toploader'; // en el layout principal
+    -- <NextTopLoader />  // colocar antes del  {children}
+
+2) https://react-slick.neostack.com/
+    a) npm install react-slick
+
+
+
+
+
+
+
+3) Autenticacion con clerk
+Clerk, es un servicio de autenticación y gestión de usuarios que se integra bien con aplicaciones Next.js.
+
+Etapa 1
+--------------------------------------------
+Ir a la página de Clerk.com y registrarse
+    Seleccionar un método usar google solamente para este proyecto
+    Luego créate aplication “nextdummyjson”
+    Seleccionar Next.js
+    1)	npm install @clerk/nextjs  //instalar
+    2)	crear el archivo  .env  en la carpeta raíz y copiar los dos parámetros
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=?
+    CLERK_SECRET_KEY= ?
+    3)	Crear el archivo middleware.ts en la carpeta raiz
+    Y agregar el contenido
+    4)	Add Clerkprovider en /src/app/layout.tsx
+
+    a)	importar
+    import {
+    ClerkProvider,
+    SignInButton,
+    SignedIn,
+    SignedOut,
+    UserButton
+    } from '@clerk/nextjs'
+
+    b)	encapsular todo
+    <ClerkProvider>
+    </ClerkProvider>
+
+    c)	agregar despues del <body>
+        <SignedOut>
+            <SignInButton />
+        </SignedOut>
+        <SignedIn>
+            <UserButton />
+        </SignedIn>
+    Probar los botones 
+
+Etapa 2
+--------------------------------------------
+Presionar 
+Continue to the Next.js guide
+
+Generar las rutas SignIn y SignUp
+Crear una carpeta (auth) y dentro las carpetas
+sign-in dentro [[…sign-in]] y dentro la página page.jsx con el contenido
+sign-up dentro [[..sign-up]] y dentro la página page.jsx con el contenido
+[[...sign-in]] representa una ruta dinámica y opcional que puede capturar segmentos de URL adicionales.
+Agregar en las variables de entorno en el archivo .env que ya tenemos
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+Probar las rutas internas y eliminar las rutas que estaban después del body
+
+
+En el menú principal ir a 
+General References -> clearkMiddleware()
+
+agregar este codigo al middleware
+const isProtectedRoute = createRouteMatcher([
+  '/laptop(.*)',
+  '/habilidades(.*)',
+]);
+export default clerkMiddleware((auth, req) => {
+  if (isProtectedRoute(req)) auth().protect();
+
+  return NextResponse.next();
+});
+
+
+En este caso para probar las rutas protegidas dejamos a 
+laptop  habilidades protegidas
+
+    
+
+
+
+
+
+
+
+
+
