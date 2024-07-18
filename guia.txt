@@ -54,6 +54,26 @@ Ir a la página de Clerk.com y registrarse
         </SignedIn>
     Probar los botones 
 
+
+modificar esto en el middleware
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+
+const isProtectedRoute = createRouteMatcher([
+  '/laptop(.*)',
+  '/habilidades(.*)',
+]);
+export default clerkMiddleware((auth, req) => {
+  if (isProtectedRoute(req)) auth().protect();
+  return NextResponse.next();
+});
+
+export const config = {
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+
+
+
 Etapa 2
 --------------------------------------------
 Presionar 
